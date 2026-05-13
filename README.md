@@ -28,7 +28,7 @@ A Flask backend project upgraded from a basic todo API into a secure task manage
 
 Dashboard and task filtering UI:
 
-![Dashboard screenshot](docs/screenshots/dashboard.png)
+![Dashboard screenshot](secure_task_mgmt/docs/screenshots/dashboard.png)
 
 Add the final deployed login and mobile screenshots before publishing if you want a fuller gallery.
 
