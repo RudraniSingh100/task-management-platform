@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Secure Task Management Platform</title>
+    <link rel="stylesheet" href="/static/app.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="auth-panel" id="authPanel">
+        <div>
+          <p class="eyebrow">Secure Task Management Platform</p>
+          <h1>Plan backend work with deadlines, priority, and JWT access.</h1>
+        </div>
+
+        <form id="authForm" class="auth-form">
+          <div class="mode-toggle" role="tablist" aria-label="Authentication mode">
+            <button type="button" class="active" id="loginMode">Login</button>
+            <button type="button" id="registerMode">Register</button>
+          </div>
+          <label>
+            Email
+            <input id="email" type="text" inputmode="email" autocomplete="email" required>
+          </label>
+          <label id="nameField" hidden>
+            Full name
+            <input id="fullName" type="text" autocomplete="name">
+          </label>
+          <label>
+            Password
+            <input id="password" type="password" autocomplete="current-password" required>
+          </label>
+          <label id="confirmField" hidden>
+            Confirm password
+            <input id="confirmPassword" type="password" autocomplete="new-password">
+          </label>
+          <button type="submit" class="primary">Continue</button>
+          <p id="authMessage" class="message"></p>
+        </form>
+      </section>
+
+      <section class="app-panel" id="appPanel" hidden>
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Workspace</p>
+            <h1>Task dashboard</h1>
+          </div>
+          <button id="logoutBtn" class="ghost">Logout</button>
+        </header>
+
+        <section class="stats-grid" id="statsGrid"></section>
+
+        <section class="workbench">
+          <aside class="sidebar">
+            <div class="section-heading">
+              <h2>Lists</h2>
+            </div>
+            <form id="listForm" class="compact-form">
+              <input id="listTitle" placeholder="New list" required>
+              <button title="Create list" aria-label="Create list">+</button>
+            </form>
+            <div id="tasklists" class="list-stack"></div>
+          </aside>
+
+          <section class="tasks-area">
+            <div class="section-heading">
+              <h2 id="activeListTitle">Tasks</h2>
+            </div>
+            <form id="taskForm" class="task-form">
+              <input id="taskTitle" placeholder="Task title" required>
+              <select id="priority">
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+                <option value="low">Low</option>
+              </select>
+              <input id="dueDate" type="datetime-local">
+              <button title="Create task" aria-label="Create task">+</button>
+            </form>
+            <div class="filters">
+              <input id="search" type="search" placeholder="Search tasks">
+              <select id="filterPriority">
+                <option value="">All priorities</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+              </select>
+              <label class="checkline">
+                <input id="showDone" type="checkbox">
+                Done
+              </label>
+            </div>
+            <div id="tasks" class="task-stack"></div>
+          </section>
+        </section>
+      </section>
+    </main>
+    <script src="/static/app.js"></script>
+  </body>
+</html>

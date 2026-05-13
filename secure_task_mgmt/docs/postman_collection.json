@@ -1,0 +1,215 @@
+{
+  "info": {
+    "name": "Secure Task Management Platform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "accessToken",
+      "value": ""
+    },
+    {
+      "key": "tasklistId",
+      "value": ""
+    },
+    {
+      "key": "taskId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Register",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/register",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\":\"demo@example.com\",\"full_name\":\"Demo User\",\"password\":\"Password123!\",\"confirm_password\":\"Password123!\"}"
+        }
+      }
+    },
+    {
+      "name": "Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();",
+              "pm.collectionVariables.set('accessToken', json.access);",
+              "pm.collectionVariables.set('refreshToken', json.refresh);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\":\"demo@example.com\",\"password\":\"Password123!\"}"
+        }
+      }
+    },
+    {
+      "name": "Refresh Access Token",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();",
+              "pm.collectionVariables.set('accessToken', json.access);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/refresh",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"refresh\":\"{{refreshToken}}\"}"
+        }
+      }
+    },
+    {
+      "name": "Dashboard",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/dashboard"
+      }
+    },
+    {
+      "name": "Create Task List",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();",
+              "pm.collectionVariables.set('tasklistId', json.id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/tasklist",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"title\":\"Internship Applications\",\"description\":\"Backend internship pipeline\"}"
+        }
+      }
+    },
+    {
+      "name": "Create High Priority Task",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();",
+              "pm.collectionVariables.set('taskId', json.id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/tasklist/{{tasklistId}}/tasks",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"title\":\"Submit Flask backend project\",\"description\":\"Attach deployed app and README\",\"priority\":\"high\",\"due_date\":\"2026-05-20T10:00:00Z\",\"reminder\":null,\"steps\":[{\"title\":\"Test JWT flow\"},{\"title\":\"Update README\"}]}"
+        }
+      }
+    },
+    {
+      "name": "Search Tasks",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/tasks?q=Flask&priority=high&is_completed=false"
+      }
+    },
+    {
+      "name": "Complete Task",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/tasklist/{{tasklistId}}/tasks/{{taskId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"is_completed\":true}"
+        }
+      }
+    }
+  ]
+}
